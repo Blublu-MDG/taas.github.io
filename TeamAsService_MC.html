@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotionClique – Votre Team Motion Design 2D & 3D</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Palette: #441DD1 (Indigo/Secondary Accent), #20A2FF (Cyan/Primary Action), #112134 (Dark Text/AAA), #3FFFB2 (Mint/Success) -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light Gray Background */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        /* Custom hover effect for service cards - Now using #20A2FF */
+        .service-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(32, 162, 255, 0.3), 0 4px 6px -2px rgba(32, 162, 255, 0.15); /* Custom sky blue shadow on hover */
+            border-color: #20A2FF;
+            transform: translateY(-2px);
+        }
+        /* Style for the hamburger icon on mobile - Now dark for light header */
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .menu-icon span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background: #112134; /* Dark Blue-Black for lines */
+            border-radius: 9px;
+            transition: all 0.3s ease-in-out;
+        }
+        .nav-open .menu-icon span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .nav-open .menu-icon span:nth-child(2) { opacity: 0; }
+        .nav-open .menu-icon span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        /* Style for the responsive menu */
+        #mobile-menu {
+            transition: max-height 0.3s ease-out;
+            max-height: 0;
+            overflow: hidden;
+            background-color: #f8fafc; /* Light background for the dropdown */
+        }
+        .nav-open #mobile-menu {
+            max-height: 300px;
+            border-top: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body class="text-[#112134]">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-[#20A2FF]/30 shadow-lg" id="main-header">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo: Remplacé par le SVG fourni -->
+            <a href="#hero" class="h-5 flex items-center">
+                <svg width="115" height="18" viewBox="0 0 115 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-full w-auto">
+                    <path d="M31.1484 15.2707V5.70215H33.7094L36.2354 12.5068L38.7615 5.70215H41.2702V15.2707H39.1622V9.07825L37.0542 15.2707H35.4166L33.2564 9.02577V15.2707H31.1484Z" fill="#112134"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M42.0195 11.9821C42.0195 9.97045 43.3958 8.51855 45.6606 8.51855C47.9079 8.51855 49.3016 9.97045 49.3016 11.9821C49.3016 13.9938 47.9079 15.4457 45.6606 15.4457C43.3958 15.4457 42.0195 13.9938 42.0195 11.9821ZM47.2285 11.9821C47.2285 10.985 46.6362 10.2678 45.6606 10.2678C44.6676 10.2678 44.0927 10.985 44.0927 11.9821C44.0927 12.9792 44.6676 13.6964 45.6606 13.6964C46.6362 13.6964 47.2285 12.9792 47.2285 11.9821Z" fill="#112134"/>
+                    <path d="M54.4572 13.609V15.2708C54.161 15.3233 53.6732 15.3758 53.0635 15.3758C52.0879 15.3758 50.7464 15.1659 50.7464 12.9618V10.3379H49.7012V8.69356H50.7464V6.73438H52.8196V8.69356H54.3004V10.3379H52.8196V12.5245C52.8196 13.5041 53.2203 13.644 53.7429 13.644C53.9694 13.644 54.2655 13.6265 54.4572 13.609Z" fill="#112134"/>
+                    <path d="M55.2422 6.83947C55.2422 6.13976 55.7648 5.5625 56.5139 5.5625C57.2631 5.5625 57.8031 6.13976 57.8031 6.83947C57.8031 7.53918 57.2631 8.11644 56.5139 8.11644C55.7648 8.11644 55.2422 7.53918 55.2422 6.83947ZM55.4861 15.271V8.69371H57.5418V15.271H55.4861Z" fill="#112134"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M58.4121 11.9821C58.4121 9.97045 59.8058 8.51855 62.0531 8.51855C64.3005 8.51855 65.6942 9.97045 65.6942 11.9821C65.6942 13.9938 64.3005 15.4457 62.0531 15.4457C59.8058 15.4457 58.4121 13.9938 58.4121 11.9821ZM63.6211 11.9821C63.6211 10.985 63.0462 10.2678 62.0531 10.2678C61.0601 10.2678 60.5027 10.985 60.5027 11.9821C60.5027 12.9792 61.0601 13.6964 62.0531 13.6964C63.0462 13.6964 63.6211 12.9792 63.6211 11.9821Z" fill="#112134"/>
+                    <path d="M66.5488 15.2708V8.69348H68.622V9.63809C69.0052 8.90339 69.7543 8.51855 70.7473 8.51855C72.3327 8.51855 73.1515 9.41068 73.1515 11.1949V15.2708H71.0435V11.8772C71.0435 10.7751 70.7299 10.2678 69.8937 10.2678C69.0575 10.2678 68.622 10.8276 68.622 11.8247V15.2708H66.5488Z" fill="#112134"/>
+                    <path d="M75.8867 10.4953C75.8867 7.55656 77.8727 5.43994 80.9911 5.43994C83.796 5.43994 85.6078 6.92682 85.8517 9.18339H83.5172C83.2733 8.09884 82.3674 7.41662 81.0086 7.41662C79.2142 7.41662 78.1863 8.62362 78.1863 10.4953C78.1863 12.3671 79.2142 13.5741 81.0086 13.5741C82.3674 13.5741 83.2733 12.8744 83.5172 11.8073H85.8517C85.6078 14.0639 83.796 15.5508 80.9911 15.5508C77.8727 15.5508 75.8867 13.4341 75.8867 10.4953Z" fill="#112134"/>
+                    <path d="M86.5645 15.2707V5.70215H88.6376V15.2707H86.5645Z" fill="#112134"/>
+                    <path d="M89.4219 6.83947C89.4219 6.13976 89.9445 5.5625 90.6936 5.5625C91.4427 5.5625 91.9828 6.13976 91.9828 6.83947C91.9828 7.53918 91.4427 8.11644 90.6936 8.11644C89.9445 8.11644 89.4219 7.53918 89.4219 6.83947ZM89.6658 15.271V8.69371H91.7215V15.271H89.6658Z" fill="#112134"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M97.6272 8.69348H99.7004V17.9996H97.6272V14.3436C97.2788 15.0084 96.46 15.4457 95.5541 15.4457C93.5855 15.4457 92.4531 13.9588 92.4531 11.9821C92.4531 10.0054 93.6726 8.51855 95.5715 8.51855C96.5297 8.51855 97.2788 8.95587 97.6272 9.63809V8.69348ZM97.7143 11.9821C97.7143 11.0375 97.1743 10.2503 96.1464 10.2503C95.1708 10.2503 94.5785 10.985 94.5785 11.9821C94.5785 12.9792 95.1708 13.7139 96.1464 13.7139C97.1743 13.7139 97.7143 12.9442 97.7143 11.9821Z" fill="#112134"/>
+                    <path d="M100.66 12.7517V8.69336H102.768V12.2969C102.768 13.189 103.064 13.6963 103.866 13.6963C104.737 13.6963 105.12 13.119 105.12 12.2269V8.69336H107.193V15.2706H105.12V14.326C104.754 15.0257 104.075 15.4456 103.082 15.4456C101.514 15.4456 100.66 14.466 100.66 12.7517Z" fill="#112134"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M114.787 12.5594H109.944C109.997 13.4165 110.572 13.8888 111.495 13.8888C112.122 13.8888 112.54 13.6964 112.714 13.2941H114.753C114.544 14.5885 113.237 15.4457 111.495 15.4457C109.265 15.4457 107.889 14.1862 107.889 11.9821C107.889 9.83051 109.282 8.51855 111.425 8.51855C113.463 8.51855 114.857 9.77803 114.857 11.6323C114.857 11.9821 114.84 12.192 114.787 12.5594ZM112.801 11.2649C112.784 10.3903 112.296 9.91797 111.408 9.91797C110.502 9.91797 109.962 10.4428 109.944 11.2649H112.801Z" fill="#112134"/>
+                    <path d="M11.1487 5.56269C12.5772 3.09621 10.8003 0 7.9606 0C6.63658 0 5.4171 0.699711 4.75509 1.85423L1.56701 7.41692L0.504309 9.27116C-0.924231 11.7376 0.852735 14.8164 3.69239 14.8164C5.01641 14.8164 6.2359 14.1166 6.8979 12.9621L10.086 7.41692L11.1487 5.56269Z" fill="#3FFFB2"/>
+                    <path d="M20.8518 5.86005C22.2803 3.39358 20.5034 0.297363 17.6637 0.297363C16.3397 0.297363 15.1202 1.01456 14.4582 2.15159L11.2701 7.71429L10.2074 9.56852C8.77889 12.035 10.5559 15.1137 13.3955 15.1137C14.7195 15.1137 15.939 14.414 16.601 13.277L19.7891 7.71429L20.8518 5.86005Z" fill="#3FFFB2"/>
+                    <path d="M20.7133 5.86005C22.1244 3.39358 20.3474 0.297363 17.5078 0.297363C16.1838 0.297363 14.9817 1.01456 14.3197 2.15159L11.1142 7.71429L10.0515 9.56852C8.64036 12.035 10.3999 15.1137 13.257 15.1137C14.5636 15.1137 15.7831 14.414 16.4451 13.277L19.6332 7.71429L20.7133 5.86005Z" fill="#3FFFB2"/>
+                    <path d="M22.8199 15.1309C20.7642 15.1309 19.0918 13.4516 19.0918 11.3875C19.0918 9.30585 20.7642 7.64404 22.8199 7.64404C24.8931 7.64404 26.5655 9.30585 26.5655 11.3875C26.5655 13.4516 24.8931 15.1309 22.8199 15.1309Z" fill="#3FFFB2"/>
+                </svg>
+            </a>
+            
+            <!-- Desktop Menu: Hover uses #20A2FF -->
+            <div class="hidden md:flex space-x-8">
+                <!-- Text color changed to #112134 for AAA compliance -->
+                <a href="#services" class="text-[#112134] hover:text-[#20A2FF] transition-colors">Services</a>
+                <a href="#pourquoi" class="text-[#112134] hover:text-[#20A2FF] transition-colors">Avantages</a>
+                <a href="#offres" class="text-[#112134] hover:text-[#20A2FF] transition-colors">Offres Créa</a>
+                <a href="#media-buying" class="text-[#112134] hover:text-[#20A2FF] transition-colors">Stratégie Ads</a>
+                <a href="#contact" class="text-[#112134] hover:text-[#20A2FF] transition-colors">Contact</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-[#112134] focus:outline-none" aria-label="Toggle navigation" id="menu-toggle">
+                <div class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+        </nav>
+        
+        <!-- Mobile Menu (Collapsed by default) -->
+        <div id="mobile-menu" class="md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
+                <!-- Text color changed to #112134 for AAA compliance -->
+                <a href="#services" class="block w-full text-center py-2 text-[#112134] hover:bg-[#20A2FF]/10 rounded-md transition-colors">Services</a>
+                <a href="#pourquoi" class="block w-full text-center py-2 text-[#112134] hover:bg-[#20A2FF]/10 rounded-md transition-colors">Avantages</a>
+                <a href="#offres" class="block w-full text-center py-2 text-[#112134] hover:bg-[#20A2FF]/10 rounded-md transition-colors">Offres Créa</a>
+                <a href="#media-buying" class="block w-full text-center py-2 text-[#112134] hover:bg-[#20A2FF]/10 rounded-md transition-colors">Stratégie Ads</a>
+                <a href="#contact" class="block w-full text-center py-2 text-[#112134] hover:bg-[#20A2FF]/10 rounded-md transition-colors">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Section Hero - Primary/Secondary accent swapped in H1. CTA uses #20A2FF -->
+        <section id="hero" class="py-24 md:py-40 text-[#112134] bg-white relative overflow-hidden border-b border-[#20A2FF]/10">
+            <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle, #441DD1 1px, transparent 1px); background-size: 25px 25px;"></div>
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h1 class="text-4xl md:text-7xl font-black leading-tight tracking-tight">Libérez votre <span class="text-[#441DD1]">Flux Créatif</span>, boostez la <span class="text-[#20A2FF]">Performance</span>.</h1>
+                <!-- Body text changed to #112134 for AAA compliance -->
+                <p class="mt-8 text-lg md:text-xl text-[#112134] max-w-4xl mx-auto">Votre équipe créative dédiée, sans recrutement, sans charges fixes. MotionClique devient votre studio motion design interne, *à la demande*.</p>
+                <!-- CTA uses #20A2FF background, text is now #112134 for AAA Large Text contrast (6.44:1) -->
+                <a href="#offres" class="mt-12 inline-block bg-[#20A2FF] text-[#112134] font-bold py-4 px-10 rounded-full shadow-2xl shadow-[#20A2FF]/50 hover:bg-[#20A2FF]/90 transition-transform transform hover:scale-105 uppercase tracking-wider">Démarrer votre projet</a>
+            </div>
+        </section>
+
+        <!-- Section Services - Icons use #441DD1 (Secondary Accent) -->
+        <section id="services" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#112134]">Ce que nous faisons pour vous</h2>
+                    <!-- Body text changed to #112134 for AAA compliance -->
+                    <p class="mt-4 text-[#112134] max-w-2xl mx-auto">De la conception à la diffusion, nous couvrons l'ensemble de vos besoins créatifs pour maximiser l'impact de vos campagnes.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 service-card transition duration-300">
+                        <span class="text-4xl text-[#441DD1] mb-4 block">✨</span>
+                        <h3 class="text-xl font-bold mb-2 inline-block">Motion Design 2D & 3D</h3>
+                        <p class="text-[#112134]">Des animations percutantes pour vos publicités, réseaux sociaux et campagnes marketing.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 service-card transition duration-300">
+                        <span class="text-4xl text-[#441DD1] mb-4 block">📦</span>
+                        <h3 class="text-xl font-bold mb-2 inline-block">Animations Produit & Packshots</h3>
+                        <p class="text-[#112134]">Sublimez vos offres avec des visuels produits dynamiques et réalistes.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 service-card transition duration-300">
+                        <span class="text-4xl text-[#441DD1] mb-4 block">📱</span>
+                        <h3 class="text-xl font-bold mb-2 inline-block">Vidéos Courtes (Meta, TikTok)</h3>
+                        <p class="text-[#112134]">Des formats optimisés pour la conversion sur toutes les plateformes sociales.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 service-card transition duration-300">
+                        <span class="text-4xl text-[#441DD1] mb-4 block">✍️</span>
+                        <h3 class="text-xl font-bold mb-2 inline-block">Storyboarding & Scénarios</h3>
+                        <p class="text-[#112134]">Racontez l'histoire de votre marque avec des concepts visuels clairs et engageants.</p>
+                    </div>
+                     <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 service-card transition duration-300">
+                        <span class="text-4xl text-[#441DD1] mb-4 block">🎯</span>
+                        <h3 class="text-xl font-bold mb-2 inline-block">Gestion de Campagnes Ads</h3>
+                        <p class="text-[#112134]">Pilotage de vos campagnes sur Facebook, Instagram, WhatsApp et TikTok ads.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200 service-card transition duration-300">
+                        <span class="text-4xl text-[#441DD1] mb-4 block">⚙️</span>
+                        <h3 class="text-xl font-bold mb-2 inline-block">Stratégie Digitale Complète</h3>
+                        <p class="text-[#112134]">Création de landing pages, automatisation, tracking et analyse de performance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Avantages (Tabs) - Accent #20A2FF for active border, text is now #112134 -->
+        <section id="pourquoi" class="py-20 bg-slate-50 border-t border-b border-slate-200">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#112134]">Pourquoi choisir MotionClique ?</h2>
+                    <p class="mt-4 text-[#112134] max-w-2xl mx-auto">Nous combinons créativité, flexibilité et expertise pour garantir la performance de vos campagnes et la croissance de votre marque.</p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-xl">
+                    <div class="flex border-b border-slate-200 mb-8 overflow-x-auto" id="tabs-nav">
+                        <!-- Active tab text uses #112134 (AAA) and border uses #20A2FF (Primary Accent) -->
+                        <button data-tab="creativite" class="tab-btn flex-1 py-3 px-2 text-center font-semibold border-b-2 border-[#20A2FF] text-[#112134] whitespace-nowrap transition-colors">💡 Créativité & Performance</button>
+                        <button data-tab="flexibilite" class="tab-btn flex-1 py-3 px-2 text-center font-semibold border-b-2 border-transparent text-[#112134] hover:text-[#20A2FF] whitespace-nowrap transition-colors">🧩 Flexibilité & Simplicité</button>
+                        <button data-tab="expertise" class="tab-btn flex-1 py-3 px-2 text-center font-semibold border-b-2 border-transparent text-[#112134] hover:text-[#20A2FF] whitespace-nowrap transition-colors">🤝 Expertise & Équipe</button>
+                        <button data-tab="croissance" class="tab-btn flex-1 py-3 px-2 text-center font-semibold border-b-2 border-transparent text-[#112134] hover:text-[#20A2FF] whitespace-nowrap transition-colors">📈 Croissance & Outils</button>
+                    </div>
+                    <div id="tabs-content" class="p-4">
+                        <!-- Content text changed to #112134 for AAA compliance -->
+                        <div id="creativite" class="tab-content">
+                            <ul class="space-y-3 text-[#112134] list-disc list-inside">
+                                <li><b>Flux créatif constant :</b> vos campagnes ne sont jamais en manque d’assets créatifs.</li>
+                                <li><b>Visuels performants :</b> des créations à la hauteur de vos objectifs et de votre image de marque.</li>
+                                <li><b>Tests A/B :</b> gestion du spend optimisé entre plusieurs variantes pour maximiser le ROI.</li>
+                                <li><b>Production rapide :</b> une créa intégrée à la stratégie pour itérer plus vite.</li>
+                            </ul>
+                        </div>
+                        <div id="flexibilite" class="tab-content hidden">
+                            <ul class="space-y-3 text-[#112134] list-disc list-inside">
+                                <li><b>Flexibilité totale :</b> des packs adaptés à vos besoins de campagne, sans engagement long terme.</li>
+                                <li><b>Abonnement transparent :</b> pas de coûts cachés, avec un reporting clair sur les créations et les performances.</li>
+                                <li><b>Production illimitée :</b> Soumettez autant de demandes que vous le souhaitez, nous travaillons sur une à la fois.</li>
+                            </ul>
+                        </div>
+                         <div id="expertise" class="tab-content hidden">
+                             <ul class="space-y-3 text-[#112134] list-disc list-inside">
+                                <li><b>Équipe complète et experte :</b> Directeur Artistique, Chef de Projet, Media Buyer, Lead 3D, Motion Designers, et plus.</li>
+                                <li><b>Consultants certifiés :</b> nos experts en paid media sont certifiés pour garantir les meilleures stratégies.</li>
+                                <li><b>Audit gratuit :</b> nous analysons votre bibliothèque créative actuelle pour identifier vos forces et axes d’amélioration.</li>
+                            </ul>
+                        </div>
+                         <div id="croissance" class="tab-content hidden">
+                             <ul class="space-y-3 text-[#112134] list-disc list-inside">
+                                <li><b>Setup offert :</b> nous configurons vos comptes publicitaires Meta pour démarrer sur des bases solides.</li>
+                                <li><b>Réseau de micro-influenceurs :</b> boostez la portée de vos campagnes grâce à des relais ciblés.</li>
+                                <li><b>Tableau de bord en temps réel :</b> suivez vos projets et vos performances en toute transparence.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Processus - Accent #20A2FF for border/arrows, text is now #112134 -->
+        <section id="process" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#112134]">Un processus simple et efficace</h2>
+                    <p class="mt-4 text-[#112134] max-w-2xl mx-auto">Notre méthode de travail est conçue pour être fluide, transparente et entièrement alignée sur vos objectifs.</p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-6 text-center">
+                    <div class="flex-1 bg-white p-6 rounded-xl border-2 border-[#20A2FF] shadow-md">
+                        <div class="text-4xl font-bold text-[#112134] mb-2">🔍</div>
+                        <h3 class="font-bold text-lg mb-1">Brief & Objectifs</h3>
+                        <p class="text-[#112134] text-sm">On comprend vos besoins et volumes souhaités.</p>
+                    </div>
+                    <div class="text-[#20A2FF] text-5xl font-thin hidden md:block">→</div>
+                    <div class="flex-1 bg-white p-6 rounded-xl border-2 border-[#20A2FF] shadow-md">
+                        <div class="text-4xl font-bold text-[#112134] mb-2">🗓️</div>
+                        <h3 class="font-bold text-lg mb-1">Planification</h3>
+                        <p class="text-[#112134] text-sm">Votre production est organisée et pilotée par un chef de projet.</p>
+                    </div>
+                     <div class="text-[#20A2FF] text-5xl font-thin hidden md:block">→</div>
+                    <div class="flex-1 bg-white p-6 rounded-xl border-2 border-[#20A2FF] shadow-md">
+                         <div class="text-4xl font-bold text-[#112134] mb-2">🚀</div>
+                            <h3 class="font-bold text-lg mb-1">Création & Livraison</h3>
+                            <p class="text-[#112134] text-sm">Visuels et animations livrés selon votre calendrier.</p>
+                    </div>
+                    <div class="text-[#20A2FF] text-5xl font-thin hidden md:block">→</div>
+                    <div class="flex-1 bg-white p-6 rounded-xl border-2 border-[#20A2FF] shadow-md">
+                        <div class="text-4xl font-bold text-[#112134] mb-2">🔄</div>
+                        <h3 class="font-bold text-lg mb-1">Optimisation Continue</h3>
+                        <p class="text-[#112134] text-sm">Ajustements et nouvelles versions pour vos tests et campagnes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Abonnements Créa (Calculateur) - Accent #20A2FF -->
+        <section id="offres" class="py-20 bg-white border-t border-slate-200">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#112134]">1. Abonnement Créa (Crédits)</h2>
+                    <p class="mt-4 text-[#112134] max-w-2xl mx-auto">Calculez vos besoins en création et découvrez l'abonnement qui vous correspond. Le système à crédit est le meilleur moyen de vous accompagner sans ralentir la production.</p>
+                    <p class="mt-2 text-sm font-semibold text-[#112134]">✅ Idéal pour produire en continu vos vidéos 2D/3D, animations social media, présentations, pitchs, etc.</p>
+                </div>
+                
+                <div class="bg-slate-100 p-8 rounded-xl shadow-2xl border border-[#20A2FF]/20">
+                    <h3 class="text-2xl font-bold text-[#20A2FF] text-center mb-6">Calculateur de Crédits Créatifs</h3>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6" id="catalogue">
+                        <!-- Catalogue items generated by JS -->
+                    </div>
+                </div>
+
+                <div class="mt-12">
+                    <!-- Résultat du Calculateur - Updated to #20A2FF background, inner text is white for max contrast -->
+                    <div class="bg-[#20A2FF] border border-[#20A2FF] p-8 rounded-xl text-center shadow-lg">
+                        <!-- Text is now White on #20A2FF (2.87:1, fails AAA, but this is large display text, and we need to prioritize the primary brand color here. We will prioritize the CTA contrast above this, and ensure body text is AAA) -->
+                        <p class="text-lg text-white">Votre besoin créatif mensuel est estimé à :</p>
+                        <p class="text-5xl font-black text-white my-2"><span id="total-credits">0</span> crédits</p>
+                        <p class="text-sm text-white/80">Sélectionnez des services ci-dessus pour voir une estimation.</p>
+                    </div>
+
+                    <!-- Graphique de Comparaison des Packs -->
+                    <div class="mt-8 bg-slate-100 p-6 rounded-xl shadow-inner">
+                        <h4 class="text-xl font-bold text-[#112134] mb-4 text-center">Comparaison des packs</h4>
+                        <div class="chart-container">
+                             <canvas id="packsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recommandation Dynamique -->
+                    <div class="mt-6 text-center">
+                        <div id="recommendation-box" class="p-4 rounded-xl shadow-lg border-2 border-transparent transition-all duration-300 hidden">
+                             <p class="text-lg font-semibold" id="recommendation-text"></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Détail des Packs Créa - Primary accents are #20A2FF, secondary are #441DD1 -->
+                     <div class="mt-12 text-center">
+                         <h3 class="text-2xl font-bold mb-6">Détail des Abonnements Créa (Dès 800€ /mois)</h3>
+                         <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                            <div id="starter-card" class="relative p-8 bg-white rounded-xl border border-slate-200 shadow-md text-center hover:border-[#441DD1] transition duration-300">
+                                <h4 class="text-xl font-bold">Starter</h4>
+                                <p class="text-4xl font-black my-4 text-[#441DD1]">80 <span class="text-base font-medium text-[#112134]">crédits/mois</span></p>
+                                <p class="text-[#112134]">Dès 800€ /mois. Idéal pour tester notre solution et pour des besoins ponctuels.</p>
+                            </div>
+                            <div id="growth-card" class="relative p-8 bg-white rounded-xl border-2 border-[#20A2FF] shadow-2xl text-center transform scale-105 transition duration-300">
+                                <span class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-[#20A2FF] text-[#112134] text-xs font-bold px-3 py-1 rounded-full uppercase">RECOMMANDÉ</span>
+                                <h4 class="text-xl font-bold">Growth</h4>
+                                <p class="text-4xl font-black my-4 text-[#20A2FF]">380 <span class="text-base font-medium text-[#112134]">crédits/mois</span></p>
+                                <p class="text-[#112134]">Dès 3 800€ /mois. Pour un flux créatif régulier, parfait pour les agences et SMMA.</p>
+                            </div>
+                            <div id="scale-card" class="relative p-8 bg-white rounded-xl border border-slate-200 shadow-md text-center hover:border-[#441DD1] transition duration-300">
+                                <h4 class="text-xl font-bold">Scale</h4>
+                                <p class="text-4xl font-black my-4 text-[#441DD1]">760 <span class="text-base font-medium text-[#112134]">crédits/mois</span></p>
+                                <p class="text-[#112134]">Dès 7 600€ /mois. Pour un volume intensif, idéal pour l'e-commerce et les campagnes multi-plateformes.</p>
+                            </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Abonnements Stratégie Ads - Bullets use #20A2FF. Highlight on Growth uses #20A2FF. -->
+        <section id="media-buying" class="py-20 bg-slate-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#112134]">2. Abonnement Stratégie Meta Ads</h2>
+                    <p class="mt-4 text-[#112134] max-w-2xl mx-auto">Nous vous accompagnons sur Meta et TikTok ads pour la gestion complète, l'optimisation et le reporting de vos campagnes publicitaires.</p>
+                    <p class="mt-2 text-sm font-semibold text-[#112134]">✅ Idéal pour scaler vos campagnes en combinant contenu créatif + gestion média.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <!-- Pack Starter Media Buying -->
+                    <div class="p-8 bg-white rounded-xl border border-[#441DD1] shadow-lg hover:shadow-xl transition duration-300">
+                        <h4 class="text-2xl font-bold text-[#20A2FF] mb-4">Pack Starter</h4>
+                        <p class="text-4xl font-black mb-4 text-[#20A2FF]">900 €</p>
+                        <p class="text-sm text-[#112134] mb-4">(Soit 1,5 jours d’accompagnement)</p>
+                        
+                        <h5 class="font-bold text-[#112134] mt-6 mb-2">Cible :</h5>
+                        <p class="text-sm text-[#112134]">Idéal pour les marques qui souhaitent poser les bases de leur stratégie créative et publicitaire.</p>
+                        
+                        <h5 class="font-bold text-[#112134] mt-6 mb-2">Stratégie Incluse :</h5>
+                        <ul class="text-sm text-[#112134] space-y-2">
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">Audit créatif + benchmark marque</span></li>
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">Audit de votre compte publicitaire (Meta)</span></li>
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">Paramétrage et tracking Meta Ads Manager</span></li>
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">Plan d'action stratégique 1 mois</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Pack Growth Media Buying -->
+                    <div class="p-8 bg-white rounded-xl border-2 border-[#20A2FF] shadow-2xl relative transform scale-100 hover:scale-[1.02] transition duration-300">
+                        <!-- Text on background is #112134 for AAA contrast (6.44:1 - Large Text) -->
+                        <span class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-[#20A2FF] text-[#112134] text-xs font-bold px-3 py-1 rounded-full uppercase">RECOMMANDÉ</span>
+                        <h4 class="text-2xl font-bold text-[#20A2FF] mb-4 pt-4">Pack Growth</h4>
+                        <p class="text-4xl font-black mb-4 text-[#20A2FF]">1 500 €</p>
+                        <p class="text-sm text-[#112134] mb-4">(Soit 2,5 jours d’accompagnement)</p>
+                        
+                        <h5 class="font-bold text-[#112134] mt-6 mb-2">Cible :</h5>
+                        <p class="text-sm text-[#112134]">Idéal pour les marques déjà actives en Paid Media et qui souhaitent accélérer leur croissance avec un suivi constant.</p>
+                        
+                        <h5 class="font-bold text-[#112134] mt-6 mb-2">Stratégie Incluse :</h5>
+                         <ul class="text-sm text-[#112134] space-y-2">
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">Audit créatif et publicitaire complet</span></li>
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">**Gestion et optimisation quotidiennes des campagnes**</span></li>
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">Reporting de performance hebdomadaire détaillé</span></li>
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">1h de consultation stratégique mensuelle</span></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Pack Scale Media Buying -->
+                    <div class="p-8 bg-white rounded-xl border border-[#441DD1] shadow-lg hover:shadow-xl transition duration-300">
+                        <h4 class="text-2xl font-bold text-[#20A2FF] mb-4">Pack Scale</h4>
+                        <p class="text-4xl font-black mb-4 text-[#20A2FF]">1 800 €</p>
+                        <p class="text-sm text-[#112134] mb-4">(Soit 3 jours d’accompagnement)</p>
+                        
+                        <h5 class="font-bold text-[#112134] mt-6 mb-2">Cible :</h5>
+                        <p class="text-sm text-[#112134]">Pour les marques avec budget spend > 15K€/mois nécessitant un contenu intensif et un suivi stratégique continu sur plusieurs plateformes.</p>
+                        
+                        <h5 class="font-bold text-[#112134] mt-6 mb-2">Stratégie Incluse :</h5>
+                         <ul class="text-sm text-[#112134] space-y-2">
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">Audit, gestion et optimisation complètes.</span></li>
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">**Gestion multi-plateforme (Meta & TikTok Ads)**</span></li>
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">Optimisation avancée de l'entonnoir (funnel)</span></li>
+                            <li class="flex items-start"><span class="text-[#20A2FF]">🔹</span><span class="ml-2">Consultation stratégique bi-mensuelle (2x/mois)</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / Contact - Accent updated to #20A2FF -->
+        <footer id="contact" class="py-20 bg-slate-100 text-[#112134] border-t border-slate-200">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold text-[#20A2FF]">Prêt à booster vos campagnes ?</h2>
+                <p class="mt-4 text-[#112134] max-w-xl mx-auto">Demandez votre audit gratuit de bibliothèque créative. Identifions ensemble vos forces et vos axes d'amélioration.</p>
+                <!-- CTA uses #20A2FF background, text is now #112134 for AAA Large Text contrast (6.44:1) -->
+                <a href="https://meetings-eu1.hubspot.com/hello100/motionclique?embed=true&uuid=7fa2e328-e9b8-46c0-8666-bebc1485616e" class="mt-8 inline-block bg-[#20A2FF] text-[#112134] font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-[#20A2FF]/90 transition-transform transform hover:scale-105">Demander mon audit gratuit</a>
+                <p class="mt-12 text-sm text-[#112134]/70">&copy; 2025 MotionClique. Tous droits réservés.</p>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- 1. Navigation Mobile Logic ---
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mainHeader = document.getElementById('main-header');
+
+            menuToggle.addEventListener('click', () => {
+                mainHeader.classList.toggle('nav-open');
+            });
+            
+            // --- 2. Tabs Logic (Avantages Section) ---
+            const tabsNav = document.getElementById('tabs-nav');
+            const tabsContent = document.getElementById('tabs-content');
+            
+            tabsNav.addEventListener('click', (e) => {
+                if (e.target.classList.contains('tab-btn')) {
+                    const tabId = e.target.getAttribute('data-tab');
+                    
+                    tabsNav.querySelectorAll('.tab-btn').forEach(btn => {
+                        // All tabs text should be #112134 (Dark Blue-Black) for AAA
+                        btn.classList.remove('text-[#20A2FF]', 'border-[#20A2FF]');
+                        btn.classList.add('text-[#112134]', 'border-transparent');
+                    });
+                    
+                    // Active tab border uses #20A2FF, text is #112134
+                    e.target.classList.add('text-[#112134]', 'border-[#20A2FF]');
+                    e.target.classList.remove('border-transparent');
+                    
+                    tabsContent.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    document.getElementById(tabId).classList.remove('hidden');
+                }
+            });
+
+            // --- 3. Calculator Data and Logic ---
+            const catalogueData = [
+                { name: 'Vidéo explicative 15s', credits: 24 },
+                { name: 'Vidéo explicative 30s', credits: 47 },
+                { name: 'Vidéo explicative 60s', credits: 95 },
+                { name: 'Animation social media (≤15s)', credits: 11 },
+                { name: 'Animation produit 3D 15s', credits: 45 },
+                { name: 'Animation produit 3D 30s', credits: 65 },
+                { name: 'Packshot 3D animé', credits: 10 },
+                { name: 'Démo produit 3D (30-60s)', credits: 90 },
+                { name: 'Animation logo simple', credits: 5 },
+                { name: 'Animation logo pro', credits: 8 },
+                { name: 'Post social media (statique)', credits: 5 },
+                { name: 'Bannière publicitaire', credits: 7 },
+                { name: 'Adaptation multi-format', credits: 3 },
+                { name: 'Storyboard seul', credits: 10 },
+                { name: 'Montage d’assets fournis (≤30s)', credits: 10 },
+            ];
+            
+            const packDetails = [
+                { name: 'Starter', credits: 80, price: '800€', cardId: 'starter-card' },
+                { name: 'Growth', credits: 380, price: '3 800€', cardId: 'growth-card' },
+                { name: 'Scale', credits: 760, price: '7 600€', cardId: 'scale-card' },
+            ];
+
+            const catalogueContainer = document.getElementById('catalogue');
+            const totalCreditsSpan = document.getElementById('total-credits');
+            const recommendationBox = document.getElementById('recommendation-box');
+            const recommendationText = document.getElementById('recommendation-text');
+            let items = [];
+
+            // Render the calculator items
+            function renderCatalogue() {
+                catalogueData.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    // Text is #112134, inner credit label is #441DD1
+                    div.className = 'flex items-center justify-between bg-white p-3 rounded-lg border border-[#20A2FF]/20 hover:border-[#20A2FF] transition duration-150';
+                    div.innerHTML = `
+                        <label for="item-${index}" class="text-sm text-[#112134] flex-1">${item.name}</label>
+                        <div class="flex items-center">
+                            <span class="text-xs font-bold text-[#441DD1] mr-3">${item.credits} crédits</span>
+                            <input type="number" id="item-${index}" data-credits="${item.credits}" value="0" min="0" 
+                                class="w-16 text-center border border-slate-300 bg-white text-[#112134] rounded-md p-1 focus:ring-2 focus:ring-[#20A2FF] focus:border-[#20A2FF] transition duration-150">
+                        </div>
+                    `;
+                    catalogueContainer.appendChild(div);
+                });
+                items = catalogueContainer.querySelectorAll('input[type="number"]');
+                items.forEach(item => item.addEventListener('input', calculateTotal));
+            }
+
+            // --- 4. Chart.js Setup - Updated to Custom Palette (#20A2FF dominates) ---
+            const chartData = {
+                labels: ['Votre Besoin', ...packDetails.map(p => p.name)],
+                datasets: [{
+                    label: 'Crédits par mois',
+                    data: [0, ...packDetails.map(p => p.credits)],
+                    backgroundColor: [
+                        '#20A2FF', // Votre Besoin (Primary: Cyan)
+                        '#441DD1', // Starter (Secondary: Indigo)
+                        '#20A2FF', // Growth (Primary: Cyan)
+                        '#441DD1'  // Scale (Secondary: Indigo)
+                    ],
+                    borderColor: [
+                        '#112134', // Dark Blue-Black
+                        '#20A2FF', // Cyan
+                        '#112134', // Dark Blue-Black
+                        '#20A2FF'  // Cyan
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const chartConfig = {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw} crédits`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Nombre de Crédits',
+                                color: '#112134' // Dark Text
+                            },
+                            ticks: {
+                                color: '#475569' // Slate-600
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#475569' // Slate-600
+                            }
+                        }
+                    }
+                }
+            };
+
+            const ctx = document.getElementById('packsChart').getContext('2d');
+            const packsChart = new Chart(ctx, chartConfig);
+
+            // --- 5. Main Calculation and Recommendation Logic ---
+            function calculateTotal() {
+                let total = 0;
+                items.forEach(item => {
+                    const credits = parseInt(item.dataset.credits);
+                    const quantity = parseInt(item.value);
+                    if (!isNaN(credits) && quantity > 0) {
+                        total += credits * quantity;
+                    }
+                    // Reset quantity to 0 if NaN or negative
+                    if (isNaN(quantity) || quantity < 0) {
+                        item.value = 0;
+                    }
+                });
+                
+                totalCreditsSpan.textContent = total;
+                packsChart.data.datasets[0].data[0] = total;
+                
+                const packData = packsChart.data.datasets[0].data;
+                const totalIndex = 0;
+                
+                // Reset all pack cards' borders
+                packDetails.forEach(p => {
+                    const card = document.getElementById(p.cardId);
+                    card.classList.remove('border-[#3FFFB2]', 'border-4', 'scale-[1.02]', 'shadow-2xl');
+                    card.classList.add('border-slate-200', 'shadow-md');
+                });
+                
+                // Re-apply default highlight to Growth package using #20A2FF (New Primary)
+                document.getElementById('growth-card').classList.remove('border-slate-200', 'shadow-md', 'scale-[1.02]');
+                document.getElementById('growth-card').classList.add('border-[#20A2FF]', 'shadow-2xl', 'scale-105');
+
+                // Reset pack chart bar colors to default/secondary
+                packsChart.data.datasets[0].backgroundColor = ['#20A2FF', '#441DD1', '#20A2FF', '#441DD1'];
+                
+                let bestFit = null;
+                let bestFitIndex = -1;
+
+                // Find the best fitting (smallest sufficient) package
+                for (let i = 0; i < packDetails.length; i++) {
+                    if (packDetails[i].credits >= total) {
+                        if (bestFit === null || (bestFitIndex > 0 && packDetails[i].credits < packDetails[bestFitIndex - 1].credits) || bestFitIndex === -1) {
+                            bestFit = packDetails[i];
+                            bestFitIndex = i + 1; // +1 because index 0 is 'Votre Besoin'
+                        }
+                    }
+                }
+                
+                // Update chart bar color for the recommended pack (if found)
+                if (bestFitIndex !== -1) {
+                    packsChart.data.datasets[0].backgroundColor[bestFitIndex] = '#3FFFB2'; // Mint Green (Success color)
+                    
+                    // Update text recommendation
+                    // Background is light mint, text is #112134 for AAA contrast
+                    recommendationBox.classList.remove('hidden', 'bg-red-100', 'bg-slate-100', 'border-red-600', 'border-slate-300', 'text-slate-600');
+                    recommendationBox.classList.add('bg-[#3FFFB2]/20', 'border-[#3FFFB2]', 'text-[#112134]');
+                    recommendationText.textContent = `La consommation estimée de ${total} crédits est couverte par l'abonnement "${bestFit.name}" (${bestFit.credits} crédits/mois), à partir de ${bestFit.price}/mois.`;
+                    
+                    // Highlight the physical card
+                    const cardToHighlight = document.getElementById(bestFit.cardId);
+                    cardToHighlight.classList.remove('border-slate-200', 'shadow-md', 'border-[#20A2FF]', 'scale-105');
+                    cardToHighlight.classList.add('border-[#3FFFB2]', 'border-4', 'shadow-2xl', 'scale-[1.02]');
+                
+                } else if (total > 0) {
+                    // Total exceeds the largest package (Error)
+                    recommendationBox.classList.remove('hidden', 'bg-[#3FFFB2]/20', 'bg-slate-100', 'border-[#3FFFB2]', 'border-slate-300', 'text-slate-600');
+                    recommendationBox.classList.add('bg-red-100', 'border-red-600', 'text-[#112134]');
+                    recommendationText.textContent = `Votre besoin estimé (${total} crédits) dépasse notre plus grand pack (Scale : 760 crédits). Contactez-nous pour une offre sur-mesure !`;
+                
+                } else {
+                    // Total is zero (Neutral)
+                    recommendationBox.classList.remove('hidden', 'bg-[#3FFFB2]/20', 'bg-red-100', 'border-[#3FFFB2]', 'border-red-600');
+                    recommendationBox.classList.add('bg-slate-100', 'border-slate-300', 'text-[#112134]');
+                    recommendationText.textContent = `Sélectionnez des quantités pour visualiser le pack idéal.`;
+                }
+
+                packsChart.update();
+            }
+
+            renderCatalogue();
+            calculateTotal(); // Initial call to show 0 credits
+        });
+    </script>
+</body>
+</html>
